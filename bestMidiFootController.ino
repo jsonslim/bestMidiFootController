@@ -2,6 +2,25 @@
 #include <vector>
 #include <String>
 
+#define buttonsNum 8
+
+CtrlButton ctrlButtons[8] = {};
+
+void initButtons()
+{
+  // read a preset from eeprom
+  for (int i = 0; i < buttonsNum; i++)
+  {
+    ctrlButtons[i] = new CtrlButton();
+  }
+}
+
+struct CtrlButtonPreset
+{
+  ButtonMode buttonMode;
+  String name;
+};
+
 enum ButtonMode
 {
   MOMENTARY,
@@ -48,15 +67,17 @@ public:
   }
 
 private:
+  int pin;
   ButtonMode buttonMode;
   String name;
-  vector<Action> btnActions;
+  std::vector<Action> btnActions;
 };
 
 void setup()
 {
   Serial.begin(115200);
   MIDI.begin(MIDI_CHANNEL);
+  initButtons();
 }
 
 void loop()
